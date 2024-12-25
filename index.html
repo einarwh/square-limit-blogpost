@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Main</title>
+  <title>LetterFCompositeMain</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4373,6 +4373,110 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
+var $author$project$Vector$add = F2(
+	function (v1, v2) {
+		return {x: v1.x + v2.x, y: v1.y + v2.y};
+	});
+var $author$project$Vector$scale = F2(
+	function (f, _v0) {
+		var x = _v0.x;
+		var y = _v0.y;
+		return {x: f * x, y: f * y};
+	});
+var $author$project$Box$moveVertically = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: A2(
+				$author$project$Vector$add,
+				a,
+				A2($author$project$Vector$scale, f, c)),
+			b: b,
+			c: c
+		};
+	});
+var $author$project$Box$scaleVertically = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: a,
+			b: b,
+			c: A2($author$project$Vector$scale, f, c)
+		};
+	});
+var $author$project$Box$splitVertically = F2(
+	function (f, box) {
+		var top = A2(
+			$author$project$Box$scaleVertically,
+			f,
+			A2($author$project$Box$moveVertically, 1 - f, box));
+		var bot = A2($author$project$Box$scaleVertically, 1 - f, box);
+		return _Utils_Tuple2(top, bot);
+	});
+var $author$project$Picture$aboveRatio = F4(
+	function (m, n, p1, p2) {
+		return function (box) {
+			var f = m / (m + n);
+			var _v0 = A2($author$project$Box$splitVertically, f, box);
+			var b1 = _v0.a;
+			var b2 = _v0.b;
+			return _Utils_ap(
+				p1(b1),
+				p2(b2));
+		};
+	});
+var $author$project$Picture$above = A2($author$project$Picture$aboveRatio, 1, 1);
+var $author$project$Box$moveHorizontally = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: A2(
+				$author$project$Vector$add,
+				a,
+				A2($author$project$Vector$scale, f, b)),
+			b: b,
+			c: c
+		};
+	});
+var $author$project$Box$scaleHorizontally = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: a,
+			b: A2($author$project$Vector$scale, f, b),
+			c: c
+		};
+	});
+var $author$project$Box$splitHorizontally = F2(
+	function (f, box) {
+		var right = A2(
+			$author$project$Box$scaleHorizontally,
+			1 - f,
+			A2($author$project$Box$moveHorizontally, f, box));
+		var left = A2($author$project$Box$scaleHorizontally, f, box);
+		return _Utils_Tuple2(left, right);
+	});
+var $author$project$Picture$besideRatio = F4(
+	function (m, n, p1, p2) {
+		return function (box) {
+			var f = m / (m + n);
+			var _v0 = A2($author$project$Box$splitHorizontally, f, box);
+			var b1 = _v0.a;
+			var b2 = _v0.b;
+			return _Utils_ap(
+				p1(b1),
+				p2(b2));
+		};
+	});
+var $author$project$Picture$beside = A2($author$project$Picture$besideRatio, 1, 1);
 var $author$project$Style$Black = {$: 'Black'};
 var $elm$core$Basics$sqrt = _Basics_sqrt;
 var $author$project$Vector$length = function (_v0) {
@@ -4507,16 +4611,6 @@ var $author$project$Fitting$mapShape = F2(
 				return x;
 		}
 	});
-var $author$project$Vector$add = F2(
-	function (v1, v2) {
-		return {x: v1.x + v2.x, y: v1.y + v2.y};
-	});
-var $author$project$Vector$scale = F2(
-	function (f, _v0) {
-		var x = _v0.x;
-		var y = _v0.y;
-		return {x: f * x, y: f * y};
-	});
 var $author$project$Fitting$mapper = F2(
 	function (_v0, _v1) {
 		var a = _v0.a;
@@ -4565,10 +4659,36 @@ var $author$project$Letter$fShape = function () {
 }();
 var $author$project$Letter$fLetter = _List_fromArray(
 	[$author$project$Letter$fShape]);
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$Vector$neg = function (_v0) {
+	var x = _v0.x;
+	var y = _v0.y;
+	return {x: -x, y: -y};
+};
+var $author$project$Box$flipBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2($author$project$Vector$add, a, b),
+		b: $author$project$Vector$neg(b),
+		c: c
+	};
+};
+var $author$project$Picture$flip = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$flipBox, p);
+};
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Main$placeInsideDiv = function (svg) {
+var $author$project$LetterFCompositeMain$placeInsideDiv = function (svg) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5145,23 +5265,78 @@ var $author$project$Rendering$toSvgWithBoxes = F3(
 				]),
 			svgElements);
 	});
-var $author$project$Main$main = function () {
+var $author$project$Box$turnBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2($author$project$Vector$add, a, b),
+		b: c,
+		c: $author$project$Vector$neg(b)
+	};
+};
+var $author$project$Picture$turn = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$turnBox, p);
+};
+var $author$project$LetterFCompositeMain$main = function () {
+	var p = $author$project$Fitting$createPicture($author$project$Letter$fLetter);
+	var composite = A2(
+		$author$project$Picture$above,
+		A2(
+			$author$project$Picture$beside,
+			$author$project$Picture$turn(
+				$author$project$Picture$turn(
+					$author$project$Picture$flip(p))),
+			$author$project$Picture$turn(
+				$author$project$Picture$turn(p))),
+		A2(
+			$author$project$Picture$beside,
+			$author$project$Picture$flip(p),
+			p));
 	var box = {
 		a: {x: 80.0, y: 80.0},
-		b: {x: 160.0, y: 40.0},
-		c: {x: 40.0, y: 160.0}
+		b: {x: 200.0, y: 0.0},
+		c: {x: 0.0, y: 200.0}
 	};
-	return $author$project$Main$placeInsideDiv(
+	var neBox = A2(
+		$author$project$Box$scaleHorizontally,
+		0.5,
+		A2(
+			$author$project$Box$scaleVertically,
+			0.5,
+			$author$project$Box$turnBox(
+				$author$project$Box$turnBox(box))));
+	var nwBox = A2(
+		$author$project$Box$scaleHorizontally,
+		0.5,
+		A2(
+			$author$project$Box$scaleVertically,
+			0.5,
+			$author$project$Box$turnBox(
+				$author$project$Box$turnBox(
+					$author$project$Box$flipBox(box)))));
+	var seBox = A2(
+		$author$project$Box$scaleHorizontally,
+		0.5,
+		A2(
+			$author$project$Box$scaleVertically,
+			0.5,
+			$author$project$Box$flipBox(box)));
+	var swBox = A2(
+		$author$project$Box$scaleHorizontally,
+		0.5,
+		A2($author$project$Box$scaleVertically, 0.5, box));
+	return $author$project$LetterFCompositeMain$placeInsideDiv(
 		A3(
 			$author$project$Rendering$toSvgWithBoxes,
 			_Utils_Tuple2(400, 400),
 			_List_fromArray(
-				[box]),
-			A2($author$project$Fitting$createPicture, $author$project$Letter$fLetter, box)));
+				[nwBox, neBox, swBox, seBox]),
+			composite(box)));
 }();
-_Platform_export({'Main':{'init':_VirtualDom_init($author$project$Main$main)(0)(0)}});}(this));
+_Platform_export({'LetterFCompositeMain':{'init':_VirtualDom_init($author$project$LetterFCompositeMain$main)(0)(0)}});}(this));
 
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
+  var app = Elm.LetterFCompositeMain.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {

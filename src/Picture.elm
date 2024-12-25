@@ -14,7 +14,7 @@ blank _ = []
 -- Exercise 1
 
 turn : Picture -> Picture
-turn p = p
+turn p = turnBox >> p
 
 -- Entirely optional bonus exercise:
 times : Int -> (a -> a) -> (a -> a)
@@ -23,28 +23,40 @@ times n fn = identity
 -- Exercise 2
 
 flip : Picture -> Picture 
-flip p = p 
+flip p = flipBox >> p 
 
 -- Exercise 3
 
 toss : Picture -> Picture 
-toss p = p 
+toss p = tossBox >> p 
 
 -- Exercise 4
 
-aboveRatio : Int -> Int -> Picture -> Picture -> Picture 
-aboveRatio m n p1 p2 = blank
+aboveRatio : Int -> Int -> Picture -> Picture -> Picture
+aboveRatio m n p1 p2 =
+  \box ->
+    let
+      f = toFloat m / toFloat (m + n)
+      (b1, b2) = splitVertically f box
+    in
+      (p1 b1) ++ (p2 b2)
 
-above : Picture -> Picture -> Picture 
-above p1 p2 = blank 
+above : Picture -> Picture -> Picture
+above = aboveRatio 1 1
 
 -- Exercise 5
 
-besideRatio : Int -> Int -> Picture -> Picture -> Picture 
-besideRatio m n p1 p2 = blank
+besideRatio : Int -> Int -> Picture -> Picture -> Picture
+besideRatio m n p1 p2 =
+  \box ->
+    let
+      f = toFloat m / toFloat (m + n)
+      (b1, b2) = splitHorizontally f box
+    in
+      (p1 b1) ++ (p2 b2)
 
-beside : Picture -> Picture -> Picture 
-beside p1 p2 = blank
+beside : Picture -> Picture -> Picture
+beside = besideRatio 1 1
 
 -- Exercise 6
 
