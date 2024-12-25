@@ -1,4 +1,4 @@
-module Rendering exposing (toSvg, toSvgWithBoxes)
+module Rendering exposing (toSvg, toSvgWithBoxes, toSvgWithSimpleBoxes, ViewBox)
 
 import Vector exposing (..)
 import Shape exposing (..)
@@ -9,6 +9,12 @@ import Mirror exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Html.Attributes
+
+type alias ViewBox =
+  { x : Int 
+  , y : Int 
+  , width : Int 
+  , height : Int }
 
 f2s : Float -> String 
 f2s = String.fromFloat
@@ -273,6 +279,38 @@ toSvgWithBoxes bounds boxes rendering =
       , height heightStr 
       , Svg.Attributes.style "background-color:white" ]
       svgElements
+
+toSvgWithSimpleBoxes : ViewBox -> (Int, Int) -> List Box -> Rendering -> Svg msg 
+toSvgWithSimpleBoxes vb bounds boxes rendering = 
+  let
+    (w, h) = bounds
+    -- viewBoxValue = ["-2", "-2", i2s w, i2s h] |> String.join " "
+    mirror = mirrorVector <| toFloat h
+    boxShapes = boxes |> List.map (toBoxShape mirror) |> List.map toBoxPolylineElement
+    toElement (shape, style) = toSvgElement style (mirrorShape mirror shape)
+    things = rendering |> List.map toElement
+    svgElements = 
+      case boxes of 
+      [] -> things
+      _ -> (things ++ boxShapes)
+    xStr = "-3"
+    yStr = "0"
+    widthStr = i2s (w + 3)
+    heightStr = i2s (h + 3)
+    viewBoxStr = [ i2s vb.x, i2s vb.y, i2s vb.width, i2s vb.height ] |> String.join " "
+  in
+    -- version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    svg
+      [ version "1.1"
+      , Html.Attributes.attribute "xmlns" "http://www.w3.org/2000/svg"
+      , viewBox viewBoxStr
+      , x (xStr ++ "px")
+      , y (yStr ++ "px")
+      , width widthStr
+      , height heightStr 
+      , Svg.Attributes.style "background-color:white" ]
+      svgElements
+
 
 toSvg : (Int, Int) -> Rendering -> Svg msg 
 toSvg bounds rendering = 

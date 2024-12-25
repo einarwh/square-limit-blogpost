@@ -60,40 +60,90 @@ beside = besideRatio 1 1
 
 -- Exercise 6
 
+-- quartet : 4 pictures arranged in 2 x 2 grid
 quartet : Picture -> Picture -> Picture -> Picture -> Picture
-quartet nw ne sw se = blank
+quartet nw ne sw se =
+  above (beside nw ne)
+        (beside sw se)
 
 -- Exercise 7
 
-nonet : Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture 
-nonet nw nm ne mw mm me sw sm se = blank
+-- nonet : 9 pictures arranged in 3 x 3 grid
+nonet : Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture -> Picture
+nonet nw nm ne mw mm me sw sm se =
+  let
+    row w m e = besideRatio 1 2 w (beside m e)
+    col n m s = aboveRatio 1 2 n (above m s)
+  in
+    col (row nw nm ne)
+        (row mw mm me)
+        (row sw sm se)
 
 -- Exercise 8
 
-over : Picture -> Picture -> Picture 
-over p1 p2 = blank
+over : Picture -> Picture -> Picture
+over p1 p2 = 
+  \box -> (p1 box) ++ (p2 box)
 
 -- Exercise 9
 
 ttile : Picture -> Picture
-ttile fish = blank
+ttile fish =
+  let
+    fishN = fish |> toss |> flip
+    fishE = fishN |> turn |> turn |> turn
+  in
+    fish |> over fishN |> over fishE
 
 -- Exercise 10
 
-utile : Picture -> Picture 
-utile fish = blank
+utile : Picture -> Picture
+utile fish =
+  let
+    fishN = fish |> toss |> flip
+    fishW = fishN |> turn
+    fishS = fishW |> turn
+    fishE = fishS |> turn
+  in
+    fishN |> over fishW |> over fishS |> over fishE
 
 -- Exercise 11
 
-side : Int -> Picture -> Picture 
-side n fish = blank
+side : Int -> Picture -> Picture
+side n fish =
+  if n < 1 then blank
+  else
+    let
+      s = side (n - 1) fish
+      t = ttile fish
+    in
+      quartet s s (turn t) t
 
 -- Exercise 12
 
-corner : Int -> Picture -> Picture 
-corner n fish = blank
+corner : Int -> Picture -> Picture
+corner n fish =
+  if n < 1 then blank
+  else
+    let
+      c = corner (n - 1) fish
+      s = side (n - 1) fish
+    in
+      quartet c s (turn s) (utile fish)
 
 -- Exercise 13
 
 squareLimit : Int -> Picture -> Picture
-squareLimit n fish = blank
+squareLimit n fish =
+  let
+    mm = utile fish
+    nw = corner n fish
+    sw = nw |> turn
+    se = sw |> turn
+    ne = se |> turn
+    nm = side n fish
+    mw = nm |> turn
+    sm = mw |> turn
+    me = sm |> turn
+  in
+    nonet nw nm ne mw mm me sw sm se

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>LetterFCompositeMain</title>
+  <title>HendersonFishUtileMain</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4373,110 +4373,11 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
-var $author$project$Vector$add = F2(
-	function (v1, v2) {
-		return {x: v1.x + v2.x, y: v1.y + v2.y};
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
 	});
-var $author$project$Vector$scale = F2(
-	function (f, _v0) {
-		var x = _v0.x;
-		var y = _v0.y;
-		return {x: f * x, y: f * y};
-	});
-var $author$project$Box$moveVertically = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: A2(
-				$author$project$Vector$add,
-				a,
-				A2($author$project$Vector$scale, f, c)),
-			b: b,
-			c: c
-		};
-	});
-var $author$project$Box$scaleVertically = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: a,
-			b: b,
-			c: A2($author$project$Vector$scale, f, c)
-		};
-	});
-var $author$project$Box$splitVertically = F2(
-	function (f, box) {
-		var top = A2(
-			$author$project$Box$scaleVertically,
-			f,
-			A2($author$project$Box$moveVertically, 1 - f, box));
-		var bot = A2($author$project$Box$scaleVertically, 1 - f, box);
-		return _Utils_Tuple2(top, bot);
-	});
-var $author$project$Picture$aboveRatio = F4(
-	function (m, n, p1, p2) {
-		return function (box) {
-			var f = m / (m + n);
-			var _v0 = A2($author$project$Box$splitVertically, f, box);
-			var b1 = _v0.a;
-			var b2 = _v0.b;
-			return _Utils_ap(
-				p1(b1),
-				p2(b2));
-		};
-	});
-var $author$project$Picture$above = A2($author$project$Picture$aboveRatio, 1, 1);
-var $author$project$Box$moveHorizontally = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: A2(
-				$author$project$Vector$add,
-				a,
-				A2($author$project$Vector$scale, f, b)),
-			b: b,
-			c: c
-		};
-	});
-var $author$project$Box$scaleHorizontally = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: a,
-			b: A2($author$project$Vector$scale, f, b),
-			c: c
-		};
-	});
-var $author$project$Box$splitHorizontally = F2(
-	function (f, box) {
-		var right = A2(
-			$author$project$Box$scaleHorizontally,
-			1 - f,
-			A2($author$project$Box$moveHorizontally, f, box));
-		var left = A2($author$project$Box$scaleHorizontally, f, box);
-		return _Utils_Tuple2(left, right);
-	});
-var $author$project$Picture$besideRatio = F4(
-	function (m, n, p1, p2) {
-		return function (box) {
-			var f = m / (m + n);
-			var _v0 = A2($author$project$Box$splitHorizontally, f, box);
-			var b1 = _v0.a;
-			var b2 = _v0.b;
-			return _Utils_ap(
-				p1(b1),
-				p2(b2));
-		};
-	});
-var $author$project$Picture$beside = A2($author$project$Picture$besideRatio, 1, 1);
 var $author$project$Style$Black = {$: 'Black'};
 var $elm$core$Basics$sqrt = _Basics_sqrt;
 var $author$project$Vector$length = function (_v0) {
@@ -4611,6 +4512,16 @@ var $author$project$Fitting$mapShape = F2(
 				return x;
 		}
 	});
+var $author$project$Vector$add = F2(
+	function (v1, v2) {
+		return {x: v1.x + v2.x, y: v1.y + v2.y};
+	});
+var $author$project$Vector$scale = F2(
+	function (f, _v0) {
+		var x = _v0.x;
+		var y = _v0.y;
+		return {x: f * x, y: f * y};
+	});
 var $author$project$Fitting$mapper = F2(
 	function (_v0, _v1) {
 		var a = _v0.a;
@@ -4640,55 +4551,211 @@ var $author$project$Fitting$createPicture = F2(
 				$author$project$Fitting$mapShape(m),
 				shapes));
 	});
-var $author$project$Letter$fShape = function () {
-	var pts = _List_fromArray(
-		[
-			{x: 0.30, y: 0.20},
-			{x: 0.40, y: 0.20},
-			{x: 0.40, y: 0.45},
-			{x: 0.60, y: 0.45},
-			{x: 0.60, y: 0.55},
-			{x: 0.40, y: 0.55},
-			{x: 0.40, y: 0.70},
-			{x: 0.70, y: 0.70},
-			{x: 0.70, y: 0.80},
-			{x: 0.30, y: 0.80}
-		]);
-	return $author$project$Shape$Polygon(
-		{points: pts});
-}();
-var $author$project$Letter$fLetter = _List_fromArray(
-	[$author$project$Letter$fShape]);
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
+var $author$project$Fishy$createCurve = F4(
+	function (v1, v2, v3, v4) {
+		return {point1: v1, point2: v2, point3: v3, point4: v4};
+	});
+var $author$project$Fishy$createVector = F2(
+	function (x, y) {
+		return {x: x, y: y};
 	});
 var $elm$core$Basics$negate = function (n) {
 	return -n;
 };
-var $author$project$Vector$neg = function (_v0) {
-	var x = _v0.x;
-	var y = _v0.y;
-	return {x: -x, y: -y};
-};
-var $author$project$Box$flipBox = function (_v0) {
-	var a = _v0.a;
-	var b = _v0.b;
-	var c = _v0.c;
-	return {
-		a: A2($author$project$Vector$add, a, b),
-		b: $author$project$Vector$neg(b),
-		c: c
-	};
-};
-var $author$project$Picture$flip = function (p) {
-	return A2($elm$core$Basics$composeR, $author$project$Box$flipBox, p);
-};
+var $author$project$Fishy$hendersonFishCurves = _List_fromArray(
+	[
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.116, 0.702),
+		A2($author$project$Fishy$createVector, 0.260, 0.295),
+		A2($author$project$Fishy$createVector, 0.330, 0.258),
+		A2($author$project$Fishy$createVector, 0.815, 0.078)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.564, 0.032),
+		A2($author$project$Fishy$createVector, 0.730, 0.056),
+		A2($author$project$Fishy$createVector, 0.834, 0.042),
+		A2($author$project$Fishy$createVector, 1.000, 0.000)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.250, 0.250),
+		A2($author$project$Fishy$createVector, 0.372, 0.194),
+		A2($author$project$Fishy$createVector, 0.452, 0.132),
+		A2($author$project$Fishy$createVector, 0.564, 0.032)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.000, 0.000),
+		A2($author$project$Fishy$createVector, 0.110, 0.110),
+		A2($author$project$Fishy$createVector, 0.175, 0.175),
+		A2($author$project$Fishy$createVector, 0.250, 0.250)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.250, 0.250),
+		A2($author$project$Fishy$createVector, -0.150, 0.150),
+		A2($author$project$Fishy$createVector, -0.090, 0.090),
+		A2($author$project$Fishy$createVector, 0.000, 0.000)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.250, 0.250),
+		A2($author$project$Fishy$createVector, -0.194, 0.372),
+		A2($author$project$Fishy$createVector, -0.132, 0.452),
+		A2($author$project$Fishy$createVector, -0.032, 0.564)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.032, 0.564),
+		A2($author$project$Fishy$createVector, 0.055, 0.355),
+		A2($author$project$Fishy$createVector, 0.080, 0.330),
+		A2($author$project$Fishy$createVector, 0.250, 0.250)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.032, 0.564),
+		A2($author$project$Fishy$createVector, -0.056, 0.730),
+		A2($author$project$Fishy$createVector, -0.042, 0.834),
+		A2($author$project$Fishy$createVector, 0.000, 1.000)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.000, 1.000),
+		A2($author$project$Fishy$createVector, 0.104, 0.938),
+		A2($author$project$Fishy$createVector, 0.163, 0.893),
+		A2($author$project$Fishy$createVector, 0.234, 0.798)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.234, 0.798),
+		A2($author$project$Fishy$createVector, 0.368, 0.650),
+		A2($author$project$Fishy$createVector, 0.232, 0.540),
+		A2($author$project$Fishy$createVector, 0.377, 0.377)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.377, 0.377),
+		A2($author$project$Fishy$createVector, 0.400, 0.350),
+		A2($author$project$Fishy$createVector, 0.450, 0.300),
+		A2($author$project$Fishy$createVector, 0.500, 0.250)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.500, 0.250),
+		A2($author$project$Fishy$createVector, 0.589, 0.217),
+		A2($author$project$Fishy$createVector, 0.660, 0.208),
+		A2($author$project$Fishy$createVector, 0.766, 0.202)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.766, 0.202),
+		A2($author$project$Fishy$createVector, 0.837, 0.107),
+		A2($author$project$Fishy$createVector, 0.896, 0.062),
+		A2($author$project$Fishy$createVector, 1.000, 0.000)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.234, 0.798),
+		A2($author$project$Fishy$createVector, 0.340, 0.792),
+		A2($author$project$Fishy$createVector, 0.411, 0.783),
+		A2($author$project$Fishy$createVector, 0.500, 0.750)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.500, 0.750),
+		A2($author$project$Fishy$createVector, 0.500, 0.625),
+		A2($author$project$Fishy$createVector, 0.500, 0.575),
+		A2($author$project$Fishy$createVector, 0.500, 0.500)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.500, 0.500),
+		A2($author$project$Fishy$createVector, 0.460, 0.460),
+		A2($author$project$Fishy$createVector, 0.410, 0.410),
+		A2($author$project$Fishy$createVector, 0.377, 0.377)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.315, 0.710),
+		A2($author$project$Fishy$createVector, 0.378, 0.732),
+		A2($author$project$Fishy$createVector, 0.426, 0.726),
+		A2($author$project$Fishy$createVector, 0.487, 0.692)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.340, 0.605),
+		A2($author$project$Fishy$createVector, 0.400, 0.642),
+		A2($author$project$Fishy$createVector, 0.435, 0.647),
+		A2($author$project$Fishy$createVector, 0.489, 0.626)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.348, 0.502),
+		A2($author$project$Fishy$createVector, 0.400, 0.564),
+		A2($author$project$Fishy$createVector, 0.422, 0.568),
+		A2($author$project$Fishy$createVector, 0.489, 0.563)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.451, 0.418),
+		A2($author$project$Fishy$createVector, 0.465, 0.400),
+		A2($author$project$Fishy$createVector, 0.480, 0.385),
+		A2($author$project$Fishy$createVector, 0.490, 0.381)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.421, 0.388),
+		A2($author$project$Fishy$createVector, 0.440, 0.350),
+		A2($author$project$Fishy$createVector, 0.455, 0.335),
+		A2($author$project$Fishy$createVector, 0.492, 0.325)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.170, 0.237),
+		A2($author$project$Fishy$createVector, -0.125, 0.355),
+		A2($author$project$Fishy$createVector, -0.065, 0.405),
+		A2($author$project$Fishy$createVector, 0.002, 0.436)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.121, 0.188),
+		A2($author$project$Fishy$createVector, -0.060, 0.300),
+		A2($author$project$Fishy$createVector, -0.030, 0.330),
+		A2($author$project$Fishy$createVector, 0.040, 0.375)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.058, 0.125),
+		A2($author$project$Fishy$createVector, -0.010, 0.240),
+		A2($author$project$Fishy$createVector, 0.030, 0.280),
+		A2($author$project$Fishy$createVector, 0.100, 0.321)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, -0.022, 0.063),
+		A2($author$project$Fishy$createVector, 0.060, 0.200),
+		A2($author$project$Fishy$createVector, 0.100, 0.240),
+		A2($author$project$Fishy$createVector, 0.160, 0.282)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.053, 0.658),
+		A2($author$project$Fishy$createVector, 0.075, 0.677),
+		A2($author$project$Fishy$createVector, 0.085, 0.687),
+		A2($author$project$Fishy$createVector, 0.098, 0.700)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.053, 0.658),
+		A2($author$project$Fishy$createVector, 0.042, 0.710),
+		A2($author$project$Fishy$createVector, 0.042, 0.760),
+		A2($author$project$Fishy$createVector, 0.053, 0.819)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.053, 0.819),
+		A2($author$project$Fishy$createVector, 0.085, 0.812),
+		A2($author$project$Fishy$createVector, 0.092, 0.752),
+		A2($author$project$Fishy$createVector, 0.098, 0.700)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.130, 0.718),
+		A2($author$project$Fishy$createVector, 0.150, 0.730),
+		A2($author$project$Fishy$createVector, 0.175, 0.745),
+		A2($author$project$Fishy$createVector, 0.187, 0.752)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.130, 0.718),
+		A2($author$project$Fishy$createVector, 0.110, 0.795),
+		A2($author$project$Fishy$createVector, 0.110, 0.810),
+		A2($author$project$Fishy$createVector, 0.112, 0.845)),
+		A4(
+		$author$project$Fishy$createCurve,
+		A2($author$project$Fishy$createVector, 0.112, 0.845),
+		A2($author$project$Fishy$createVector, 0.150, 0.805),
+		A2($author$project$Fishy$createVector, 0.172, 0.780),
+		A2($author$project$Fishy$createVector, 0.187, 0.752))
+	]);
+var $author$project$Fishy$fishShapes = A2($elm$core$List$map, $author$project$Shape$Curve, $author$project$Fishy$hendersonFishCurves);
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$LetterFCompositeMain$placeInsideDiv = function (svg) {
+var $author$project$HendersonFishUtileMain$placeInsideDiv = function (svg) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -4698,7 +4765,6 @@ var $author$project$LetterFCompositeMain$placeInsideDiv = function (svg) {
 		_List_fromArray(
 			[svg]));
 };
-var $author$project$Rendering$acolor = '#88499c';
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -4707,215 +4773,8 @@ var $elm$virtual_dom$VirtualDom$attribute = F2(
 			_VirtualDom_noJavaScriptOrHtmlUri(value));
 	});
 var $elm$html$Html$Attributes$attribute = $elm$virtual_dom$VirtualDom$attribute;
-var $author$project$Rendering$axiscolor = 'black';
-var $author$project$Rendering$bcolor = '#2381bf';
-var $author$project$Rendering$ccolor = '#27b15b';
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
-var $elm$core$List$concatMap = F2(
-	function (f, list) {
-		return $elm$core$List$concat(
-			A2($elm$core$List$map, f, list));
-	});
-var $author$project$Rendering$createAxisList = F2(
-	function (interval, n) {
-		if (n < 1) {
-			return _List_Nil;
-		} else {
-			var next = n - interval;
-			return A2(
-				$elm$core$List$cons,
-				n,
-				A2($author$project$Rendering$createAxisList, interval, next));
-		}
-	});
-var $author$project$Rendering$i2s = $elm$core$String$fromInt;
-var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var $elm$svg$Svg$line = $elm$svg$Svg$trustedNode('line');
-var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
-var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
-var $elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
-var $elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
-var $elm$svg$Svg$Attributes$y1 = _VirtualDom_attribute('y1');
-var $elm$svg$Svg$Attributes$y2 = _VirtualDom_attribute('y2');
-var $author$project$Rendering$createXAxisElement = F2(
-	function (y, x) {
-		return A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$x1(
-					$author$project$Rendering$i2s(x)),
-					$elm$svg$Svg$Attributes$y1(
-					$author$project$Rendering$i2s(y + 3)),
-					$elm$svg$Svg$Attributes$x2(
-					$author$project$Rendering$i2s(x)),
-					$elm$svg$Svg$Attributes$y2(
-					$author$project$Rendering$i2s(y - 3)),
-					$elm$svg$Svg$Attributes$stroke('black'),
-					$elm$svg$Svg$Attributes$strokeWidth('1.0')
-				]),
-			_List_Nil);
-	});
-var $elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
-	});
-var $author$project$Rendering$createXAxis = F2(
-	function (xmax, ypos) {
-		var axisList = A2($author$project$Rendering$createAxisList, 40, xmax);
-		return A2(
-			$elm$core$List$drop,
-			1,
-			A2(
-				$elm$core$List$map,
-				$author$project$Rendering$createXAxisElement(ypos),
-				A2(
-					$elm$core$List$map,
-					function (x) {
-						return xmax - x;
-					},
-					axisList)));
-	});
-var $author$project$Rendering$createYAxisElement = F2(
-	function (x, y) {
-		return A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$x1(
-					$author$project$Rendering$i2s(x - 3)),
-					$elm$svg$Svg$Attributes$y1(
-					$author$project$Rendering$i2s(y)),
-					$elm$svg$Svg$Attributes$x2(
-					$author$project$Rendering$i2s(x + 3)),
-					$elm$svg$Svg$Attributes$y2(
-					$author$project$Rendering$i2s(y)),
-					$elm$svg$Svg$Attributes$stroke('black'),
-					$elm$svg$Svg$Attributes$strokeWidth('1.0')
-				]),
-			_List_Nil);
-	});
-var $author$project$Rendering$createYAxis = F2(
-	function (xpos, ymax) {
-		var axisList = A2($author$project$Rendering$createAxisList, 40, ymax);
-		return A2(
-			$elm$core$List$drop,
-			1,
-			A2(
-				$elm$core$List$map,
-				$author$project$Rendering$createYAxisElement(xpos),
-				axisList));
-	});
-var $elm$svg$Svg$Attributes$markerEnd = _VirtualDom_attribute('marker-end');
-var $author$project$Rendering$createAxes = F2(
-	function (w, h) {
-		var yy = $author$project$Rendering$i2s(h);
-		var xx = $author$project$Rendering$i2s(0);
-		var axisColor = 'black';
-		var xAxis = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$x1(
-					$author$project$Rendering$i2s(0)),
-					$elm$svg$Svg$Attributes$y1(yy),
-					$elm$svg$Svg$Attributes$x2(
-					$author$project$Rendering$i2s(w)),
-					$elm$svg$Svg$Attributes$y2(yy),
-					$elm$svg$Svg$Attributes$stroke(axisColor),
-					$elm$svg$Svg$Attributes$strokeWidth('1.0'),
-					$elm$svg$Svg$Attributes$markerEnd('url(#axis-arrow)')
-				]),
-			_List_Nil);
-		var yAxis = A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$x1(xx),
-					$elm$svg$Svg$Attributes$y1(
-					$author$project$Rendering$i2s(w)),
-					$elm$svg$Svg$Attributes$x2(xx),
-					$elm$svg$Svg$Attributes$y2(
-					$author$project$Rendering$i2s(0)),
-					$elm$svg$Svg$Attributes$stroke(axisColor),
-					$elm$svg$Svg$Attributes$strokeWidth('1.0'),
-					$elm$svg$Svg$Attributes$markerEnd('url(#axis-arrow)')
-				]),
-			_List_Nil);
-		return _Utils_ap(
-			_List_fromArray(
-				[xAxis, yAxis]),
-			_Utils_ap(
-				A2($author$project$Rendering$createXAxis, w, h),
-				A2($author$project$Rendering$createYAxis, 0, h)));
-	});
-var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
-var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
-var $elm$svg$Svg$Attributes$id = _VirtualDom_attribute('id');
-var $elm$svg$Svg$marker = $elm$svg$Svg$trustedNode('marker');
-var $elm$svg$Svg$Attributes$markerHeight = _VirtualDom_attribute('markerHeight');
-var $elm$svg$Svg$Attributes$markerUnits = _VirtualDom_attribute('markerUnits');
-var $elm$svg$Svg$Attributes$markerWidth = _VirtualDom_attribute('markerWidth');
-var $elm$svg$Svg$Attributes$orient = _VirtualDom_attribute('orient');
-var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
-var $elm$svg$Svg$Attributes$refX = _VirtualDom_attribute('refX');
-var $elm$svg$Svg$Attributes$refY = _VirtualDom_attribute('refY');
-var $author$project$Rendering$createMarker = function (_v0) {
-	var markerId = _v0.a;
-	var color = _v0.b;
-	return A2(
-		$elm$svg$Svg$marker,
-		_List_fromArray(
-			[
-				$elm$svg$Svg$Attributes$id(markerId),
-				$elm$svg$Svg$Attributes$markerWidth('10'),
-				$elm$svg$Svg$Attributes$markerHeight('10'),
-				$elm$svg$Svg$Attributes$refX('9'),
-				$elm$svg$Svg$Attributes$refY('3'),
-				$elm$svg$Svg$Attributes$orient('auto'),
-				$elm$svg$Svg$Attributes$markerUnits('strokeWidth')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$svg$Svg$path,
-				_List_fromArray(
-					[
-						$elm$svg$Svg$Attributes$d('M0,0 L0,6 L9,3 z'),
-						$elm$svg$Svg$Attributes$fill(color)
-					]),
-				_List_Nil)
-			]));
-};
-var $elm$svg$Svg$defs = $elm$svg$Svg$trustedNode('defs');
 var $elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
+var $author$project$Rendering$i2s = $elm$core$String$fromInt;
 var $author$project$Shape$Line = function (a) {
 	return {$: 'Line', a: a};
 };
@@ -4966,64 +4825,16 @@ var $author$project$Mirror$mirrorVector = F2(
 		return {x: x, y: height - y};
 	});
 var $elm$svg$Svg$Attributes$style = _VirtualDom_attribute('style');
+var $elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var $elm$svg$Svg$svg = $elm$svg$Svg$trustedNode('svg');
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Rendering$f2s = $elm$core$String$fromFloat;
-var $author$project$Rendering$toBoxLine = F4(
-	function (m, v1, v2, _v0) {
-		var name = _v0.a;
-		var color = _v0.b;
-		var w2 = m(
-			A2($author$project$Vector$add, v1, v2));
-		var w1 = m(v1);
-		return A2(
-			$elm$svg$Svg$line,
-			_List_fromArray(
-				[
-					$elm$svg$Svg$Attributes$x1(
-					$author$project$Rendering$f2s(w1.x)),
-					$elm$svg$Svg$Attributes$y1(
-					$author$project$Rendering$f2s(w1.y)),
-					$elm$svg$Svg$Attributes$x2(
-					$author$project$Rendering$f2s(w2.x)),
-					$elm$svg$Svg$Attributes$y2(
-					$author$project$Rendering$f2s(w2.y)),
-					$elm$svg$Svg$Attributes$stroke(color),
-					$elm$svg$Svg$Attributes$strokeWidth('1.5'),
-					$elm$svg$Svg$Attributes$markerEnd('url(#' + (name + ')'))
-				]),
-			_List_Nil);
-	});
-var $author$project$Rendering$toBoxArrows = F2(
-	function (m, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return _List_fromArray(
-			[
-				A4(
-				$author$project$Rendering$toBoxLine,
-				m,
-				{x: 0, y: 0},
-				a,
-				_Utils_Tuple2('a-arrow', $author$project$Rendering$acolor)),
-				A4(
-				$author$project$Rendering$toBoxLine,
-				m,
-				a,
-				b,
-				_Utils_Tuple2('b-arrow', $author$project$Rendering$bcolor)),
-				A4(
-				$author$project$Rendering$toBoxLine,
-				m,
-				a,
-				c,
-				_Utils_Tuple2('c-arrow', $author$project$Rendering$ccolor))
-			]);
-	});
+var $elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var $elm$svg$Svg$Attributes$points = _VirtualDom_attribute('points');
 var $elm$svg$Svg$polyline = $elm$svg$Svg$trustedNode('polyline');
+var $elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var $elm$svg$Svg$Attributes$strokeDasharray = _VirtualDom_attribute('stroke-dasharray');
+var $elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
 var $author$project$Rendering$toBoxPolylineElement = function (pts) {
 	var sw = 1;
 	var s = function () {
@@ -5073,6 +4884,7 @@ var $author$project$Rendering$toBoxShape = F2(
 	});
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$svg$Svg$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$svg$Svg$Attributes$d = _VirtualDom_attribute('d');
 var $author$project$Rendering$getStrokeWidthFromStyle = function (style) {
 	if (style.$ === 'Just') {
 		var strokeWidth = style.a.strokeWidth;
@@ -5081,6 +4893,7 @@ var $author$project$Rendering$getStrokeWidthFromStyle = function (style) {
 		return 2.0;
 	}
 };
+var $elm$svg$Svg$path = $elm$svg$Svg$trustedNode('path');
 var $author$project$Rendering$toCurveElement = F5(
 	function (style, pt1, pt2, pt3, pt4) {
 		var toStr = function (_v0) {
@@ -5184,35 +4997,25 @@ var $elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var $elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var $elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
 var $elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var $author$project$Rendering$toSvgWithBoxes = F3(
-	function (bounds, boxes, rendering) {
+var $author$project$Rendering$toSvgWithSimpleBoxes = F4(
+	function (vb, bounds, boxes, rendering) {
 		var yStr = '0';
 		var xStr = '-3';
-		var vectorMarkers = _List_fromArray(
-			[
-				_Utils_Tuple2('a-arrow', $author$project$Rendering$acolor),
-				_Utils_Tuple2('b-arrow', $author$project$Rendering$bcolor),
-				_Utils_Tuple2('c-arrow', $author$project$Rendering$ccolor),
-				_Utils_Tuple2('axis-arrow', $author$project$Rendering$axiscolor)
-			]);
-		var axisMarker = _Utils_Tuple2('axis-arrow', $author$project$Rendering$axiscolor);
-		var markers = _Utils_ap(
-			vectorMarkers,
+		var viewBoxStr = A2(
+			$elm$core$String$join,
+			' ',
 			_List_fromArray(
-				[axisMarker]));
-		var defs = A2(
-			$elm$svg$Svg$defs,
-			_List_Nil,
-			A2($elm$core$List$map, $author$project$Rendering$createMarker, markers));
+				[
+					$author$project$Rendering$i2s(vb.x),
+					$author$project$Rendering$i2s(vb.y),
+					$author$project$Rendering$i2s(vb.width),
+					$author$project$Rendering$i2s(vb.height)
+				]));
 		var _v0 = bounds;
 		var w = _v0.a;
 		var h = _v0.b;
 		var heightStr = $author$project$Rendering$i2s(h + 3);
 		var mirror = $author$project$Mirror$mirrorVector(h);
-		var boxArrows = A2(
-			$elm$core$List$concatMap,
-			$author$project$Rendering$toBoxArrows(mirror),
-			boxes);
 		var boxShapes = A2(
 			$elm$core$List$map,
 			$author$project$Rendering$toBoxPolylineElement,
@@ -5229,27 +5032,14 @@ var $author$project$Rendering$toSvgWithBoxes = F3(
 				A2($author$project$Mirror$mirrorShape, mirror, shape));
 		};
 		var things = A2($elm$core$List$map, toElement, rendering);
-		var axes = A2($author$project$Rendering$createAxes, w, h);
 		var svgElements = function () {
 			if (!boxes.b) {
 				return things;
 			} else {
-				return _Utils_ap(
-					_List_fromArray(
-						[defs]),
-					_Utils_ap(
-						things,
-						_Utils_ap(
-							boxShapes,
-							_Utils_ap(boxArrows, axes))));
+				return _Utils_ap(things, boxShapes);
 			}
 		}();
 		var widthStr = $author$project$Rendering$i2s(w + 3);
-		var viewBoxStr = A2(
-			$elm$core$String$join,
-			' ',
-			_List_fromArray(
-				[xStr, yStr, widthStr, heightStr]));
 		return A2(
 			$elm$svg$Svg$svg,
 			_List_fromArray(
@@ -5265,6 +5055,40 @@ var $author$project$Rendering$toSvgWithBoxes = F3(
 				]),
 			svgElements);
 	});
+var $author$project$Vector$neg = function (_v0) {
+	var x = _v0.x;
+	var y = _v0.y;
+	return {x: -x, y: -y};
+};
+var $author$project$Vector$sub = F2(
+	function (v1, v2) {
+		return A2(
+			$author$project$Vector$add,
+			v1,
+			$author$project$Vector$neg(v2));
+	});
+var $author$project$Box$tossBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2(
+			$author$project$Vector$add,
+			a,
+			A2(
+				$author$project$Vector$scale,
+				0.5,
+				A2($author$project$Vector$add, b, c))),
+		b: A2(
+			$author$project$Vector$scale,
+			0.5,
+			A2($author$project$Vector$add, b, c)),
+		c: A2(
+			$author$project$Vector$scale,
+			0.5,
+			A2($author$project$Vector$sub, c, b))
+	};
+};
 var $author$project$Box$turnBox = function (_v0) {
 	var a = _v0.a;
 	var b = _v0.b;
@@ -5275,68 +5099,82 @@ var $author$project$Box$turnBox = function (_v0) {
 		c: $author$project$Vector$neg(b)
 	};
 };
+var $author$project$Box$flipBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2($author$project$Vector$add, a, b),
+		b: $author$project$Vector$neg(b),
+		c: c
+	};
+};
+var $author$project$Picture$flip = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$flipBox, p);
+};
+var $author$project$Picture$over = F2(
+	function (p1, p2) {
+		return function (box) {
+			return _Utils_ap(
+				p1(box),
+				p2(box));
+		};
+	});
+var $author$project$Picture$toss = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$tossBox, p);
+};
 var $author$project$Picture$turn = function (p) {
 	return A2($elm$core$Basics$composeR, $author$project$Box$turnBox, p);
 };
-var $author$project$LetterFCompositeMain$main = function () {
-	var p = $author$project$Fitting$createPicture($author$project$Letter$fLetter);
-	var composite = A2(
-		$author$project$Picture$above,
+var $author$project$Picture$utile = function (fish) {
+	var fishN = $author$project$Picture$flip(
+		$author$project$Picture$toss(fish));
+	var fishW = $author$project$Picture$turn(fishN);
+	var fishS = $author$project$Picture$turn(fishW);
+	var fishE = $author$project$Picture$turn(fishS);
+	return A2(
+		$author$project$Picture$over,
+		fishE,
 		A2(
-			$author$project$Picture$beside,
-			$author$project$Picture$turn(
-				$author$project$Picture$turn(
-					$author$project$Picture$flip(p))),
-			$author$project$Picture$turn(
-				$author$project$Picture$turn(p))),
-		A2(
-			$author$project$Picture$beside,
-			$author$project$Picture$flip(p),
-			p));
+			$author$project$Picture$over,
+			fishS,
+			A2($author$project$Picture$over, fishW, fishN)));
+};
+var $author$project$HendersonFishUtileMain$main = function () {
+	var vb = {height: 380, width: 400, x: -20, y: 20};
+	var p = $author$project$Fitting$createPicture($author$project$Fishy$fishShapes);
 	var box = {
 		a: {x: 80.0, y: 80.0},
-		b: {x: 200.0, y: 0.0},
-		c: {x: 0.0, y: 200.0}
+		b: {x: 180.0, y: 0.0},
+		c: {x: 0.0, y: 180.0}
 	};
-	var neBox = A2(
-		$author$project$Box$scaleHorizontally,
-		0.5,
-		A2(
-			$author$project$Box$scaleVertically,
-			0.5,
-			$author$project$Box$turnBox(
-				$author$project$Box$turnBox(box))));
-	var nwBox = A2(
-		$author$project$Box$scaleHorizontally,
-		0.5,
-		A2(
-			$author$project$Box$scaleVertically,
-			0.5,
-			$author$project$Box$turnBox(
-				$author$project$Box$turnBox(
-					$author$project$Box$flipBox(box)))));
-	var seBox = A2(
-		$author$project$Box$scaleHorizontally,
-		0.5,
-		A2(
-			$author$project$Box$scaleVertically,
-			0.5,
-			$author$project$Box$flipBox(box)));
-	var swBox = A2(
-		$author$project$Box$scaleHorizontally,
-		0.5,
-		A2($author$project$Box$scaleVertically, 0.5, box));
-	return $author$project$LetterFCompositeMain$placeInsideDiv(
-		A3(
-			$author$project$Rendering$toSvgWithBoxes,
-			_Utils_Tuple2(400, 400),
-			_List_fromArray(
-				[nwBox, neBox, swBox, seBox]),
-			composite(box)));
+	var boxes = _List_fromArray(
+		[
+			$author$project$Box$tossBox(box),
+			A2($elm$core$Basics$composeR, $author$project$Box$turnBox, $author$project$Box$tossBox)(box),
+			A2(
+			$elm$core$Basics$composeR,
+			$author$project$Box$turnBox,
+			A2($elm$core$Basics$composeR, $author$project$Box$turnBox, $author$project$Box$tossBox))(box),
+			A2(
+			$elm$core$Basics$composeR,
+			$author$project$Box$turnBox,
+			A2(
+				$elm$core$Basics$composeR,
+				$author$project$Box$turnBox,
+				A2($elm$core$Basics$composeR, $author$project$Box$turnBox, $author$project$Box$tossBox)))(box)
+		]);
+	return $author$project$HendersonFishUtileMain$placeInsideDiv(
+		A4(
+			$author$project$Rendering$toSvgWithSimpleBoxes,
+			vb,
+			_Utils_Tuple2(400, 380),
+			boxes,
+			A2($author$project$Picture$utile, p, box)));
 }();
-_Platform_export({'LetterFCompositeMain':{'init':_VirtualDom_init($author$project$LetterFCompositeMain$main)(0)(0)}});}(this));
+_Platform_export({'HendersonFishUtileMain':{'init':_VirtualDom_init($author$project$HendersonFishUtileMain$main)(0)(0)}});}(this));
 
-  var app = Elm.LetterFCompositeMain.init({ node: document.getElementById("elm") });
+  var app = Elm.HendersonFishUtileMain.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {
