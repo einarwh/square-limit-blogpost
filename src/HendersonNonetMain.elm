@@ -44,5 +44,5 @@ main =
         ]
   in
     box |> nonet h e n d e r s o n 
-        |> toSvgWithSimpleBoxes vb (300, 300) boxes
+        |> toSvgWithSimpleBoxes vb DottedBox (300, 300) boxes
         |> placeInsideDiv

@@ -29,5 +29,5 @@ main =
         , (turnBox >> turnBox >> turnBox >> tossBox) box ]
   in
     box |> utile p 
-        |> toSvgWithSimpleBoxes vb (400, 380) boxes
+        |> toSvgWithSimpleBoxes vb DottedBox (400, 380) boxes
         |> placeInsideDiv

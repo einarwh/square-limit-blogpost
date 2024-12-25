@@ -1,4 +1,4 @@
-module Rendering exposing (toSvg, toSvgWithBoxes, toSvgWithSimpleBoxes, ViewBox)
+module Rendering exposing (toSvg, toSvgWithBoxes, toSvgWithSimpleBoxes, ViewBox, BoxStyle(..))
 
 import Vector exposing (..)
 import Shape exposing (..)
@@ -9,6 +9,8 @@ import Mirror exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Html.Attributes
+
+type BoxStyle = DottedBox | SolidBox 
 
 type alias ViewBox =
   { x : Int 
@@ -86,8 +88,24 @@ toSvgElement style shape =
       toCurveElement style point1 point2 point3 point4 
     x -> text "nothing"
 
-toBoxPolylineElement : List Vector -> Svg msg
-toBoxPolylineElement pts = 
+toSolidBoxPolylineElement : List Vector -> Svg msg
+toSolidBoxPolylineElement pts = 
+  let 
+    s = 
+      let 
+        str {x, y} = (f2s x) ++ "," ++ (f2s y)
+      in
+        pts |> List.map str |> String.join " "
+    sw = 1
+  in
+    Svg.polyline 
+      [ stroke "red"
+      , strokeWidth <| f2s sw
+      , fill "None"
+      , points s ] []
+
+toDottedBoxPolylineElement : List Vector -> Svg msg
+toDottedBoxPolylineElement pts = 
   let 
     s = 
       let 
@@ -245,7 +263,7 @@ toSvgWithBoxes bounds boxes rendering =
     (w, h) = bounds
     -- viewBoxValue = ["-2", "-2", i2s w, i2s h] |> String.join " "
     mirror = mirrorVector <| toFloat h
-    boxShapes = boxes |> List.map (toBoxShape mirror) |> List.map toBoxPolylineElement
+    boxShapes = boxes |> List.map (toBoxShape mirror) |> List.map toDottedBoxPolylineElement
     boxArrows = boxes |> List.concatMap (toBoxArrows mirror)
     toElement (shape, style) = toSvgElement style (mirrorShape mirror shape)
     things = rendering |> List.map toElement
@@ -280,13 +298,15 @@ toSvgWithBoxes bounds boxes rendering =
       , Svg.Attributes.style "background-color:white" ]
       svgElements
 
-toSvgWithSimpleBoxes : ViewBox -> (Int, Int) -> List Box -> Rendering -> Svg msg 
-toSvgWithSimpleBoxes vb bounds boxes rendering = 
+toSvgWithSimpleBoxes : ViewBox -> BoxStyle -> (Int, Int) -> List Box -> Rendering -> Svg msg 
+toSvgWithSimpleBoxes vb boxStyle bounds boxes rendering = 
   let
     (w, h) = bounds
-    -- viewBoxValue = ["-2", "-2", i2s w, i2s h] |> String.join " "
     mirror = mirrorVector <| toFloat h
-    boxShapes = boxes |> List.map (toBoxShape mirror) |> List.map toBoxPolylineElement
+    boxShapes = 
+      case boxStyle of 
+        DottedBox -> boxes |> List.map (toBoxShape mirror) |> List.map toDottedBoxPolylineElement
+        SolidBox -> boxes |> List.map (toBoxShape mirror) |> List.map toSolidBoxPolylineElement
     toElement (shape, style) = toSvgElement style (mirrorShape mirror shape)
     things = rendering |> List.map toElement
     svgElements = 

@@ -27,6 +27,6 @@ main =
     vb = { x = 40, y = -155, width = 300, height = 200 }
   in
     box |> (turn >> flip >> toss) p
-        |> toSvgWithSimpleBoxes vb (300, 225) [ (tossBox >> flipBox >> turnBox) box ]
+        |> toSvgWithSimpleBoxes vb DottedBox (300, 225) [ (tossBox >> flipBox >> turnBox) box ]
         -- |> toSvgWithSimpleBoxes (270, 220) [ box ]
         |> placeInsideDiv

@@ -27,6 +27,6 @@ main =
     vb = { x = 20, y = -55, width = 300, height = 200 }
   in
     box |> p
-        |> toSvgWithSimpleBoxes vb (300, 225) [ box ]
+        |> toSvgWithSimpleBoxes vb DottedBox (300, 225) [ box ]
         -- |> toSvgWithSimpleBoxes (270, 220) [ box ]
         |> placeInsideDiv
