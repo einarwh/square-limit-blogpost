@@ -1,4 +1,4 @@
-module HendersonFishSideMain exposing (..)
+module HendersonFishCornerMain exposing (..)
 
 import Letter exposing (..)
 import Fitting exposing (createPicture)
@@ -19,14 +19,14 @@ placeInsideDiv svg =
 main : Svg msg
 main = 
   let 
-    box = { a = { x = 40.0, y = 40.0 }
+    box = { a = { x = 40.0, y = 20.0 }
           , b = { x = 260.0, y = 0.0 }
           , c = { x = 0.0, y = 260.0 } }
     p = createPicture fishShapes
-    vb = { x = 0, y = 0, width = 340, height = 310 }
-    level = 2
-    boxes = sideBoxes level box 
+    vb = { x = 0, y = 0, width = 340, height = 290 }
+    level = 1
+    boxes = cornerBoxes level box 
    in
-    box |> side level p 
-        |> toSvgWithSimpleBoxes vb SolidBox (340, 310) boxes
+    box |> corner level p 
+        |> toSvgWithSimpleBoxes vb SolidBox (340, 290) boxes
         |> placeInsideDiv
