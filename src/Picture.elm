@@ -95,7 +95,66 @@ ttile fish =
   in
     fish |> over fishN |> over fishE
 
+cycle : Picture -> Picture 
+cycle p = 
+  let
+    ne = p 
+    nw = p |> turn 
+    sw = p |> turn |> turn 
+    se = p |> turn |> turn |> turn 
+  in
+    quartet nw ne sw se 
+
+tosstile : Picture -> Picture
+tosstile fish =
+  let
+    fishN = fish |> toss |> flip
+    fishE = fishN |> turn |> turn |> turn
+  in
+    fish |> over fishE
+
+tossfish : Int -> Picture -> Picture 
+tossfish n p = 
+  if n < 1 then blank
+  else 
+
+    -- over (tosstile p) (tossfish (n - 1) (toss p))
+    over (tosstile p) ((tosstile p) |> toss |> flip)
 -- Exercise 10
+
+tossalot : Picture -> Picture
+tossalot fish =
+  let
+    fishN = fish |> toss |> flip
+    fishE = fishN |> turn |> turn |> turn
+    fishTT = fish |> toss |> toss 
+    fishTTTT = fishTT |> toss |> toss 
+    fishTTTTTT = fishTTTT |> toss |> toss 
+    fishNTT = fishN |> toss |> toss
+    fishNTTTT = fishNTT |> toss |> toss
+    fishETT = fishE |> toss |> toss
+    fishETTTT = fishETT |> toss |> toss
+    fishETTTTTT = fishETTTT |> toss |> toss
+    fishX = fishN |> flip |> turn |> turn |> turn |> toss
+    fishXTT = fishX |> toss |> toss 
+    fishXTTTT = fishXTT |> toss |> toss 
+    fishXTTTTTT = fishXTTTT |> toss |> toss 
+  in
+    fish 
+    |> over fishN 
+    |> over fishE 
+    |> over fishTT
+    |> over fishTTTT
+    |> over fishTTTTTT
+    |> over fishETT
+    |> over fishETTTT
+    -- |> over fishETTTTTT
+    |> over fishNTT
+    |> over fishNTTTT
+    |> over fishX
+    |> over fishXTT
+    |> over fishXTTTT
+    -- |> over fishXTTTTTT
 
 utile : Picture -> Picture
 utile fish =

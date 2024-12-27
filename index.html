@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>HendersonFishSquareLimitMain</title>
+  <title>HendersonBoxesMain</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
 
@@ -4374,6 +4374,155 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	}
 };
 var $author$project$Rendering$SolidBox = {$: 'SolidBox'};
+var $author$project$Vector$add = F2(
+	function (v1, v2) {
+		return {x: v1.x + v2.x, y: v1.y + v2.y};
+	});
+var $author$project$Vector$scale = F2(
+	function (f, _v0) {
+		var x = _v0.x;
+		var y = _v0.y;
+		return {x: f * x, y: f * y};
+	});
+var $author$project$Box$moveHorizontally = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: A2(
+				$author$project$Vector$add,
+				a,
+				A2($author$project$Vector$scale, f, b)),
+			b: b,
+			c: c
+		};
+	});
+var $author$project$Box$scaleHorizontally = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: a,
+			b: A2($author$project$Vector$scale, f, b),
+			c: c
+		};
+	});
+var $author$project$Box$splitHorizontally = F2(
+	function (f, box) {
+		var right = A2(
+			$author$project$Box$scaleHorizontally,
+			1 - f,
+			A2($author$project$Box$moveHorizontally, f, box));
+		var left = A2($author$project$Box$scaleHorizontally, f, box);
+		return _Utils_Tuple2(left, right);
+	});
+var $author$project$Box$moveVertically = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: A2(
+				$author$project$Vector$add,
+				a,
+				A2($author$project$Vector$scale, f, c)),
+			b: b,
+			c: c
+		};
+	});
+var $author$project$Box$scaleVertically = F2(
+	function (f, _v0) {
+		var a = _v0.a;
+		var b = _v0.b;
+		var c = _v0.c;
+		return {
+			a: a,
+			b: b,
+			c: A2($author$project$Vector$scale, f, c)
+		};
+	});
+var $author$project$Box$splitVertically = F2(
+	function (f, box) {
+		var top = A2(
+			$author$project$Box$scaleVertically,
+			f,
+			A2($author$project$Box$moveVertically, 1 - f, box));
+		var bot = A2($author$project$Box$scaleVertically, 1 - f, box);
+		return _Utils_Tuple2(top, bot);
+	});
+var $author$project$Recursion$sideBoxes = F2(
+	function (n, box) {
+		if (n < 1) {
+			return _List_fromArray(
+				[box]);
+		} else {
+			var _v0 = A2($author$project$Box$splitVertically, 0.5, box);
+			var top = _v0.a;
+			var bot = _v0.b;
+			var _v1 = A2($author$project$Box$splitHorizontally, 0.5, bot);
+			var sw = _v1.a;
+			var se = _v1.b;
+			var _v2 = A2($author$project$Box$splitHorizontally, 0.5, top);
+			var nw = _v2.a;
+			var ne = _v2.b;
+			return _Utils_ap(
+				A2($author$project$Recursion$sideBoxes, n - 1, nw),
+				_Utils_ap(
+					A2($author$project$Recursion$sideBoxes, n - 1, ne),
+					_List_fromArray(
+						[sw, se])));
+		}
+	});
+var $author$project$Recursion$westSideBoxes = F2(
+	function (n, box) {
+		if (n < 1) {
+			return _List_fromArray(
+				[box]);
+		} else {
+			var _v0 = A2($author$project$Box$splitVertically, 0.5, box);
+			var top = _v0.a;
+			var bot = _v0.b;
+			var _v1 = A2($author$project$Box$splitHorizontally, 0.5, bot);
+			var sw = _v1.a;
+			var se = _v1.b;
+			var _v2 = A2($author$project$Box$splitHorizontally, 0.5, top);
+			var nw = _v2.a;
+			var ne = _v2.b;
+			return _Utils_ap(
+				A2($author$project$Recursion$westSideBoxes, n - 1, nw),
+				_Utils_ap(
+					A2($author$project$Recursion$westSideBoxes, n - 1, sw),
+					_List_fromArray(
+						[ne, se])));
+		}
+	});
+var $author$project$Recursion$cornerBoxes = F2(
+	function (n, box) {
+		if (n < 1) {
+			return _List_fromArray(
+				[box]);
+		} else {
+			var _v0 = A2($author$project$Box$splitVertically, 0.5, box);
+			var top = _v0.a;
+			var bot = _v0.b;
+			var _v1 = A2($author$project$Box$splitHorizontally, 0.5, bot);
+			var sw = _v1.a;
+			var se = _v1.b;
+			var _v2 = A2($author$project$Box$splitHorizontally, 0.5, top);
+			var nw = _v2.a;
+			var ne = _v2.b;
+			return _Utils_ap(
+				A2($author$project$Recursion$cornerBoxes, n - 1, nw),
+				_Utils_ap(
+					A2($author$project$Recursion$sideBoxes, n - 1, ne),
+					_Utils_ap(
+						A2($author$project$Recursion$westSideBoxes, n - 1, sw),
+						_List_fromArray(
+							[se]))));
+		}
+	});
 var $author$project$Style$Black = {$: 'Black'};
 var $elm$core$Basics$sqrt = _Basics_sqrt;
 var $author$project$Vector$length = function (_v0) {
@@ -4508,16 +4657,6 @@ var $author$project$Fitting$mapShape = F2(
 				return x;
 		}
 	});
-var $author$project$Vector$add = F2(
-	function (v1, v2) {
-		return {x: v1.x + v2.x, y: v1.y + v2.y};
-	});
-var $author$project$Vector$scale = F2(
-	function (f, _v0) {
-		var x = _v0.x;
-		var y = _v0.y;
-		return {x: f * x, y: f * y};
-	});
 var $author$project$Fitting$mapper = F2(
 	function (_v0, _v1) {
 		var a = _v0.a;
@@ -4547,6 +4686,75 @@ var $author$project$Fitting$createPicture = F2(
 				$author$project$Fitting$mapShape(m),
 				shapes));
 	});
+var $author$project$Picture$aboveRatio = F4(
+	function (m, n, p1, p2) {
+		return function (box) {
+			var f = m / (m + n);
+			var _v0 = A2($author$project$Box$splitVertically, f, box);
+			var b1 = _v0.a;
+			var b2 = _v0.b;
+			return _Utils_ap(
+				p1(b1),
+				p2(b2));
+		};
+	});
+var $author$project$Picture$above = A2($author$project$Picture$aboveRatio, 1, 1);
+var $author$project$Picture$besideRatio = F4(
+	function (m, n, p1, p2) {
+		return function (box) {
+			var f = m / (m + n);
+			var _v0 = A2($author$project$Box$splitHorizontally, f, box);
+			var b1 = _v0.a;
+			var b2 = _v0.b;
+			return _Utils_ap(
+				p1(b1),
+				p2(b2));
+		};
+	});
+var $author$project$Picture$beside = A2($author$project$Picture$besideRatio, 1, 1);
+var $author$project$Picture$quartet = F4(
+	function (nw, ne, sw, se) {
+		return A2(
+			$author$project$Picture$above,
+			A2($author$project$Picture$beside, nw, ne),
+			A2($author$project$Picture$beside, sw, se));
+	});
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$Vector$neg = function (_v0) {
+	var x = _v0.x;
+	var y = _v0.y;
+	return {x: -x, y: -y};
+};
+var $author$project$Box$turnBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2($author$project$Vector$add, a, b),
+		b: c,
+		c: $author$project$Vector$neg(b)
+	};
+};
+var $author$project$Picture$turn = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$turnBox, p);
+};
+var $author$project$Picture$cycle = function (p) {
+	var sw = $author$project$Picture$turn(
+		$author$project$Picture$turn(p));
+	var se = $author$project$Picture$turn(
+		$author$project$Picture$turn(
+			$author$project$Picture$turn(p)));
+	var nw = $author$project$Picture$turn(p);
+	var ne = p;
+	return A4($author$project$Picture$quartet, nw, ne, sw, se);
+};
 var $author$project$Fishy$createCurve = F4(
 	function (v1, v2, v3, v4) {
 		return {point1: v1, point2: v2, point3: v3, point4: v4};
@@ -4555,9 +4763,6 @@ var $author$project$Fishy$createVector = F2(
 	function (x, y) {
 		return {x: x, y: y};
 	});
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $author$project$Fishy$hendersonFishCurves = _List_fromArray(
 	[
 		A4(
@@ -4748,10 +4953,22 @@ var $author$project$Fishy$hendersonFishCurves = _List_fromArray(
 		A2($author$project$Fishy$createVector, 0.187, 0.752))
 	]);
 var $author$project$Fishy$fishShapes = A2($elm$core$List$map, $author$project$Shape$Curve, $author$project$Fishy$hendersonFishCurves);
+var $author$project$Gather$gatherBoxes = F3(
+	function (n, transform, box) {
+		return (n < 1) ? _List_fromArray(
+			[box]) : A2(
+			$elm$core$List$cons,
+			box,
+			A3(
+				$author$project$Gather$gatherBoxes,
+				n - 1,
+				transform,
+				transform(box)));
+	});
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$HendersonFishSquareLimitMain$placeInsideDiv = function (svg) {
+var $author$project$HendersonBoxesMain$placeInsideDiv = function (svg) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -4761,280 +4978,6 @@ var $author$project$HendersonFishSquareLimitMain$placeInsideDiv = function (svg)
 		_List_fromArray(
 			[svg]));
 };
-var $author$project$Picture$blank = function (_v0) {
-	return _List_Nil;
-};
-var $author$project$Box$moveVertically = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: A2(
-				$author$project$Vector$add,
-				a,
-				A2($author$project$Vector$scale, f, c)),
-			b: b,
-			c: c
-		};
-	});
-var $author$project$Box$scaleVertically = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: a,
-			b: b,
-			c: A2($author$project$Vector$scale, f, c)
-		};
-	});
-var $author$project$Box$splitVertically = F2(
-	function (f, box) {
-		var top = A2(
-			$author$project$Box$scaleVertically,
-			f,
-			A2($author$project$Box$moveVertically, 1 - f, box));
-		var bot = A2($author$project$Box$scaleVertically, 1 - f, box);
-		return _Utils_Tuple2(top, bot);
-	});
-var $author$project$Picture$aboveRatio = F4(
-	function (m, n, p1, p2) {
-		return function (box) {
-			var f = m / (m + n);
-			var _v0 = A2($author$project$Box$splitVertically, f, box);
-			var b1 = _v0.a;
-			var b2 = _v0.b;
-			return _Utils_ap(
-				p1(b1),
-				p2(b2));
-		};
-	});
-var $author$project$Picture$above = A2($author$project$Picture$aboveRatio, 1, 1);
-var $author$project$Box$moveHorizontally = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: A2(
-				$author$project$Vector$add,
-				a,
-				A2($author$project$Vector$scale, f, b)),
-			b: b,
-			c: c
-		};
-	});
-var $author$project$Box$scaleHorizontally = F2(
-	function (f, _v0) {
-		var a = _v0.a;
-		var b = _v0.b;
-		var c = _v0.c;
-		return {
-			a: a,
-			b: A2($author$project$Vector$scale, f, b),
-			c: c
-		};
-	});
-var $author$project$Box$splitHorizontally = F2(
-	function (f, box) {
-		var right = A2(
-			$author$project$Box$scaleHorizontally,
-			1 - f,
-			A2($author$project$Box$moveHorizontally, f, box));
-		var left = A2($author$project$Box$scaleHorizontally, f, box);
-		return _Utils_Tuple2(left, right);
-	});
-var $author$project$Picture$besideRatio = F4(
-	function (m, n, p1, p2) {
-		return function (box) {
-			var f = m / (m + n);
-			var _v0 = A2($author$project$Box$splitHorizontally, f, box);
-			var b1 = _v0.a;
-			var b2 = _v0.b;
-			return _Utils_ap(
-				p1(b1),
-				p2(b2));
-		};
-	});
-var $author$project$Picture$beside = A2($author$project$Picture$besideRatio, 1, 1);
-var $author$project$Picture$quartet = F4(
-	function (nw, ne, sw, se) {
-		return A2(
-			$author$project$Picture$above,
-			A2($author$project$Picture$beside, nw, ne),
-			A2($author$project$Picture$beside, sw, se));
-	});
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
-var $author$project$Vector$neg = function (_v0) {
-	var x = _v0.x;
-	var y = _v0.y;
-	return {x: -x, y: -y};
-};
-var $author$project$Box$flipBox = function (_v0) {
-	var a = _v0.a;
-	var b = _v0.b;
-	var c = _v0.c;
-	return {
-		a: A2($author$project$Vector$add, a, b),
-		b: $author$project$Vector$neg(b),
-		c: c
-	};
-};
-var $author$project$Picture$flip = function (p) {
-	return A2($elm$core$Basics$composeR, $author$project$Box$flipBox, p);
-};
-var $author$project$Picture$over = F2(
-	function (p1, p2) {
-		return function (box) {
-			return _Utils_ap(
-				p1(box),
-				p2(box));
-		};
-	});
-var $author$project$Vector$sub = F2(
-	function (v1, v2) {
-		return A2(
-			$author$project$Vector$add,
-			v1,
-			$author$project$Vector$neg(v2));
-	});
-var $author$project$Box$tossBox = function (_v0) {
-	var a = _v0.a;
-	var b = _v0.b;
-	var c = _v0.c;
-	return {
-		a: A2(
-			$author$project$Vector$add,
-			a,
-			A2(
-				$author$project$Vector$scale,
-				0.5,
-				A2($author$project$Vector$add, b, c))),
-		b: A2(
-			$author$project$Vector$scale,
-			0.5,
-			A2($author$project$Vector$add, b, c)),
-		c: A2(
-			$author$project$Vector$scale,
-			0.5,
-			A2($author$project$Vector$sub, c, b))
-	};
-};
-var $author$project$Picture$toss = function (p) {
-	return A2($elm$core$Basics$composeR, $author$project$Box$tossBox, p);
-};
-var $author$project$Box$turnBox = function (_v0) {
-	var a = _v0.a;
-	var b = _v0.b;
-	var c = _v0.c;
-	return {
-		a: A2($author$project$Vector$add, a, b),
-		b: c,
-		c: $author$project$Vector$neg(b)
-	};
-};
-var $author$project$Picture$turn = function (p) {
-	return A2($elm$core$Basics$composeR, $author$project$Box$turnBox, p);
-};
-var $author$project$Picture$ttile = function (fish) {
-	var fishN = $author$project$Picture$flip(
-		$author$project$Picture$toss(fish));
-	var fishE = $author$project$Picture$turn(
-		$author$project$Picture$turn(
-			$author$project$Picture$turn(fishN)));
-	return A2(
-		$author$project$Picture$over,
-		fishE,
-		A2($author$project$Picture$over, fishN, fish));
-};
-var $author$project$Picture$side = F2(
-	function (n, fish) {
-		if (n < 1) {
-			return $author$project$Picture$blank;
-		} else {
-			var t = $author$project$Picture$ttile(fish);
-			var s = A2($author$project$Picture$side, n - 1, fish);
-			return A4(
-				$author$project$Picture$quartet,
-				s,
-				s,
-				$author$project$Picture$turn(t),
-				t);
-		}
-	});
-var $author$project$Picture$utile = function (fish) {
-	var fishN = $author$project$Picture$flip(
-		$author$project$Picture$toss(fish));
-	var fishW = $author$project$Picture$turn(fishN);
-	var fishS = $author$project$Picture$turn(fishW);
-	var fishE = $author$project$Picture$turn(fishS);
-	return A2(
-		$author$project$Picture$over,
-		fishE,
-		A2(
-			$author$project$Picture$over,
-			fishS,
-			A2($author$project$Picture$over, fishW, fishN)));
-};
-var $author$project$Picture$corner = F2(
-	function (n, fish) {
-		if (n < 1) {
-			return $author$project$Picture$blank;
-		} else {
-			var s = A2($author$project$Picture$side, n - 1, fish);
-			var c = A2($author$project$Picture$corner, n - 1, fish);
-			return A4(
-				$author$project$Picture$quartet,
-				c,
-				s,
-				$author$project$Picture$turn(s),
-				$author$project$Picture$utile(fish));
-		}
-	});
-var $author$project$Picture$nonet = F9(
-	function (nw, nm, ne, mw, mm, me, sw, sm, se) {
-		var row = F3(
-			function (w, m, e) {
-				return A4(
-					$author$project$Picture$besideRatio,
-					1,
-					2,
-					w,
-					A2($author$project$Picture$beside, m, e));
-			});
-		var col = F3(
-			function (n, m, s) {
-				return A4(
-					$author$project$Picture$aboveRatio,
-					1,
-					2,
-					n,
-					A2($author$project$Picture$above, m, s));
-			});
-		return A3(
-			col,
-			A3(row, nw, nm, ne),
-			A3(row, mw, mm, me),
-			A3(row, sw, sm, se));
-	});
-var $author$project$Picture$squareLimit = F2(
-	function (n, fish) {
-		var nw = A2($author$project$Picture$corner, n, fish);
-		var sw = $author$project$Picture$turn(nw);
-		var se = $author$project$Picture$turn(sw);
-		var nm = A2($author$project$Picture$side, n, fish);
-		var ne = $author$project$Picture$turn(se);
-		var mw = $author$project$Picture$turn(nm);
-		var sm = $author$project$Picture$turn(mw);
-		var mm = $author$project$Picture$utile(fish);
-		var me = $author$project$Picture$turn(sm);
-		return A9($author$project$Picture$nonet, nw, nm, ne, mw, mm, me, sw, sm, se);
-	});
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -5362,27 +5305,96 @@ var $author$project$Rendering$toSvgWithSimpleBoxes = F5(
 				]),
 			svgElements);
 	});
-var $author$project$HendersonFishSquareLimitMain$main = function () {
-	var vb = {height: 400, width: 400, x: 0, y: 0};
+var $author$project$Vector$sub = F2(
+	function (v1, v2) {
+		return A2(
+			$author$project$Vector$add,
+			v1,
+			$author$project$Vector$neg(v2));
+	});
+var $author$project$Box$tossBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2(
+			$author$project$Vector$add,
+			a,
+			A2(
+				$author$project$Vector$scale,
+				0.5,
+				A2($author$project$Vector$add, b, c))),
+		b: A2(
+			$author$project$Vector$scale,
+			0.5,
+			A2($author$project$Vector$add, b, c)),
+		c: A2(
+			$author$project$Vector$scale,
+			0.5,
+			A2($author$project$Vector$sub, c, b))
+	};
+};
+var $author$project$Box$flipBox = function (_v0) {
+	var a = _v0.a;
+	var b = _v0.b;
+	var c = _v0.c;
+	return {
+		a: A2($author$project$Vector$add, a, b),
+		b: $author$project$Vector$neg(b),
+		c: c
+	};
+};
+var $author$project$Picture$flip = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$flipBox, p);
+};
+var $author$project$Picture$over = F2(
+	function (p1, p2) {
+		return function (box) {
+			return _Utils_ap(
+				p1(box),
+				p2(box));
+		};
+	});
+var $author$project$Picture$toss = function (p) {
+	return A2($elm$core$Basics$composeR, $author$project$Box$tossBox, p);
+};
+var $author$project$Picture$ttile = function (fish) {
+	var fishN = $author$project$Picture$flip(
+		$author$project$Picture$toss(fish));
+	var fishE = $author$project$Picture$turn(
+		$author$project$Picture$turn(
+			$author$project$Picture$turn(fishN)));
+	return A2(
+		$author$project$Picture$over,
+		fishE,
+		A2($author$project$Picture$over, fishN, fish));
+};
+var $author$project$HendersonBoxesMain$main = function () {
+	var vb = {height: 290, width: 340, x: -25, y: 5};
 	var p = $author$project$Fitting$createPicture($author$project$Fishy$fishShapes);
-	var level = 3;
+	var level = 1;
 	var box = {
 		a: {x: 0.0, y: 0.0},
-		b: {x: 400.0, y: 0.0},
-		c: {x: 0.0, y: 400.0}
+		b: {x: 40.0, y: 0.0},
+		c: {x: 0.0, y: 40.0}
 	};
-	return $author$project$HendersonFishSquareLimitMain$placeInsideDiv(
+	var boxen = A3($author$project$Gather$gatherBoxes, 6, $author$project$Box$tossBox, box);
+	var boxes = A2($author$project$Recursion$cornerBoxes, level, box);
+	return $author$project$HendersonBoxesMain$placeInsideDiv(
 		A5(
 			$author$project$Rendering$toSvgWithSimpleBoxes,
 			vb,
 			$author$project$Rendering$SolidBox,
-			_Utils_Tuple2(400, 400),
+			_Utils_Tuple2(340, 290),
 			_List_Nil,
-			A3($author$project$Picture$squareLimit, level, p, box)));
+			A2(
+				$author$project$Picture$cycle,
+				$author$project$Picture$ttile(p),
+				box)));
 }();
-_Platform_export({'HendersonFishSquareLimitMain':{'init':_VirtualDom_init($author$project$HendersonFishSquareLimitMain$main)(0)(0)}});}(this));
+_Platform_export({'HendersonBoxesMain':{'init':_VirtualDom_init($author$project$HendersonBoxesMain$main)(0)(0)}});}(this));
 
-  var app = Elm.HendersonFishSquareLimitMain.init({ node: document.getElementById("elm") });
+  var app = Elm.HendersonBoxesMain.init({ node: document.getElementById("elm") });
 }
 catch (e)
 {
